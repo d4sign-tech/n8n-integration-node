@@ -1,10 +1,15 @@
-import type { ICredentialType, INodeProperties } from 'n8n-workflow';
+import type {
+	IAuthenticateGeneric,
+	ICredentialTestRequest,
+	ICredentialType,
+	INodeProperties,
+} from 'n8n-workflow';
 
 export class D4SignApi implements ICredentialType {
 	name = 'd4SignApi';
 	displayName = 'D4Sign API';
 	documentationUrl = 'https://docapi.d4sign.com.br/';
-	authenticate = {
+	authenticate: IAuthenticateGeneric = {
 		type: 'generic' as const,
 		properties: {
 			qs: {
@@ -13,9 +18,10 @@ export class D4SignApi implements ICredentialType {
 			},
 		},
 	};
-	test = {
+	test: ICredentialTestRequest = {
 		request: {
-			url: 'https://secure.d4sign.com.br/api/v1/safes',
+			baseURL: 'https://secure.d4sign.com.br/api/v1',
+			url: '/safes',
 			method: 'GET' as const,
 		},
 	};
