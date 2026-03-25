@@ -10,7 +10,7 @@
     "README.md"
   ],
   "scripts": {
-    "build": "rimraf dist && tsc && copy nodes\\D4Sign\\d4sign.svg dist\\nodes\\D4Sign\\",
+    "build": "rimraf dist && tsc && node -e \"const fs=require('fs');fs.mkdirSync('dist/nodes/D4Sign',{recursive:true});fs.copyFileSync('nodes/D4Sign/d4sign.svg','dist/nodes/D4Sign/d4sign.svg');\"",
     "dev": "tsc --watch",
     "lint": "eslint . --ext .ts",
     "prepublishOnly": "npm run build"
