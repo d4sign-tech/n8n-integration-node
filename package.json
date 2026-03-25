@@ -1,5 +1,5 @@
 {
-  "name": "n8n-nodes-d4sign",
+  "name": "@d4sign/n8n-nodes-d4sign",
   "version": "1.0.1",
   "description": "n8n node for D4Sign API",
   "main": "dist/nodes/D4Sign/D4Sign.node.js",

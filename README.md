@@ -1,4 +1,4 @@
-# n8n-nodes-d4sign
+# @d4sign/n8n-nodes-d4sign
 
 Community node for integrating n8n with the D4Sign API.
 
@@ -7,7 +7,7 @@ Community node for integrating n8n with the D4Sign API.
 Install in your n8n custom nodes environment:
 
 ```bash
-npm install n8n-nodes-d4sign
+npm install @d4sign/n8n-nodes-d4sign
 ```
 
 ## Credentials
