@@ -5,6 +5,7 @@
   "main": "dist/nodes/D4Sign/D4Sign.node.js",
   "files": [
     "dist",
+    "examples",
     "LICENSE",
     "README.md"
   ],
