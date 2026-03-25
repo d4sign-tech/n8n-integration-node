@@ -1,0 +1,53 @@
+{
+  "name": "n8n-nodes-d4sign",
+  "version": "1.0.1",
+  "description": "n8n node for D4Sign API",
+  "main": "dist/nodes/D4Sign/D4Sign.node.js",
+  "files": [
+    "dist",
+    "LICENSE",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "rimraf dist && tsc && copy nodes\\D4Sign\\d4sign.svg dist\\nodes\\D4Sign\\",
+    "dev": "tsc --watch",
+    "lint": "eslint . --ext .ts",
+    "prepublishOnly": "npm run build"
+  },
+  "keywords": [
+    "n8n-community-node-package"
+  ],
+  "author": {
+    "name": "Connect Think",
+    "email": "contato@connectthink.com.br"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/d4sign-tech/n8n-integration-node.git"
+  },
+  "homepage": "https://github.com/d4sign-tech/n8n-integration-node#readme",
+  "bugs": {
+    "url": "https://github.com/d4sign-tech/n8n-integration-node/issues"
+  },
+  "peerDependencies": {
+    "n8n-workflow": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^18.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.57.0",
+    "@typescript-eslint/parser": "^8.57.0",
+    "eslint": "^10.0.3",
+    "n8n-workflow": "^1.0.0",
+    "rimraf": "^5.0.0",
+    "typescript": "^5.0.0"
+  },
+  "n8n": {
+    "nodes": [
+      "dist/nodes/D4Sign/D4Sign.node.js"
+    ],
+    "credentials": [
+      "dist/credentials/D4SignApi.credentials.js"
+    ]
+  }
+}
