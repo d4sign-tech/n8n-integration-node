@@ -15,8 +15,7 @@ export class D4SignApi implements ICredentialType {
 	};
 	test = {
 		request: {
-			baseURL: 'https://secure.d4sign.com.br/api/v1',
-			url: '/safes',
+			url: 'https://secure.d4sign.com.br/api/v1/safes',
 			method: 'GET' as const,
 		},
 	};

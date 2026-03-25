@@ -22,19 +22,7 @@ type D4SignErrorLike = {
 
 const BASE_URL = 'https://secure.d4sign.com.br/api/v1';
 
-async function getAuthQuery(this: D4SignContext): Promise<IDataObject> {
-	const credentials = await this.getCredentials('d4SignApi');
-	return {
-		tokenAPI: credentials.tokenApi,
-		cryptKey: credentials.cryptKey,
-	};
-}
-
 export function normalizeBase64(input: string): string {
-	// Accept:
-	// - raw base64
-	// - data:<mime>;base64,<base64>
-	// - base64,<base64>
 	const trimmed = String(input ?? '').trim();
 	if (!trimmed) {
 		throw new Error('Base64 content is empty.');
@@ -43,7 +31,6 @@ export function normalizeBase64(input: string): string {
 	const commaIndex = trimmed.indexOf(',');
 	const payload = commaIndex !== -1 ? trimmed.slice(commaIndex + 1) : trimmed;
 
-	// Remove whitespace/new lines and normalize URL-safe base64 variants.
 	let normalized = payload.replace(/\s+/g, '').replace(/-/g, '+').replace(/_/g, '/');
 	if (!normalized) {
 		throw new Error('Base64 content is empty after normalization.');
@@ -53,7 +40,6 @@ export function normalizeBase64(input: string): string {
 		throw new Error('Base64 content contains invalid characters.');
 	}
 
-	// Ensure the string is properly padded for decode validation.
 	const modulo = normalized.length % 4;
 	if (modulo === 1) {
 		throw new Error('Base64 content has invalid length.');
@@ -63,7 +49,6 @@ export function normalizeBase64(input: string): string {
 		normalized = `${normalized}${'='.repeat(4 - modulo)}`;
 	}
 
-	// Validate by decoding and re-encoding without padding.
 	try {
 		const decoded = Buffer.from(normalized, 'base64');
 		if (!decoded.length) {
@@ -90,19 +75,15 @@ export async function d4signApiRequest(
 	body: IDataObject = {},
 	query: IDataObject = {},
 ): Promise<unknown> {
-	const authQuery = await getAuthQuery.call(this);
-
 	const options: IHttpRequestOptions = {
 		method,
 		url: `${BASE_URL}${endpoint}`,
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
-			tokenAPI: authQuery.tokenAPI as string,
 		},
 		qs: {
 			...query,
-			...authQuery,
 		},
 		json: true,
 	};
@@ -112,7 +93,7 @@ export async function d4signApiRequest(
 	}
 
 	try {
-		return await this.helpers.httpRequest(options);
+		return await this.helpers.httpRequestWithAuthentication.call(this, 'd4SignApi', options);
 	} catch (error: unknown) {
 		const typedError = error as D4SignErrorLike;
 		const statusCode = typedError.httpCode ?? typedError.statusCode ?? typedError.response?.status;
@@ -136,9 +117,6 @@ export async function d4signApiRequestFormData(
 	formData: IDataObject,
 	query: IDataObject = {},
 ): Promise<unknown> {
-	const authQuery = await getAuthQuery.call(this);
-
-	// n8n's request options support `formData`, but the TypeScript type may not include it.
 	const options: FormDataRequestOptions = {
 		method: 'POST',
 		url: `${BASE_URL}${endpoint}`,
@@ -147,7 +125,6 @@ export async function d4signApiRequestFormData(
 		},
 		qs: {
 			...query,
-			...authQuery,
 		},
 		json: true,
 	};
@@ -155,7 +132,7 @@ export async function d4signApiRequestFormData(
 	options.formData = formData;
 
 	try {
-		return await this.helpers.httpRequest(options);
+		return await this.helpers.httpRequestWithAuthentication.call(this, 'd4SignApi', options);
 	} catch (error: unknown) {
 		const typedError = error as D4SignErrorLike;
 		const statusCode = typedError.httpCode ?? typedError.statusCode ?? typedError.response?.status;
@@ -183,7 +160,7 @@ export async function d4signApiRequestRaw(
 		method,
 		url,
 		json: false,
-		encoding: 'arraybuffer', // request returns binary
+		encoding: 'arraybuffer',
 	};
 
 	try {

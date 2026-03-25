@@ -41,12 +41,10 @@ export async function executeSignatory(
 const email = this.getNodeParameter('email', itemIndex) as string;
 const role = this.getNodeParameter('role', itemIndex) as string;
 
-// Required by D4Sign for /createlist
-const foreign = this.getNodeParameter('foreign', itemIndex) as string; // 0 = has CPF, 1 = no CPF
-const certificadoicpbr = this.getNodeParameter('certificadoicpbr', itemIndex) as string; // 0/1
-const assinaturaPresencial = this.getNodeParameter('assinaturaPresencial', itemIndex) as string; // 0/1
+const foreign = this.getNodeParameter('foreign', itemIndex) as string;
+const certificadoicpbr = this.getNodeParameter('certificadoicpbr', itemIndex) as string;
+const assinaturaPresencial = this.getNodeParameter('assinaturaPresencial', itemIndex) as string;
 
-// Optional controls
 const foreignLang = this.getNodeParameter('foreignLang', itemIndex, '') as string;
 const docauth = this.getNodeParameter('docauth', itemIndex, '0') as string;
 const docauthandselfie = this.getNodeParameter('docauthandselfie', itemIndex, '0') as string;
@@ -61,7 +59,7 @@ const skipEmail = this.getNodeParameter('skipEmail', itemIndex, false) as boolea
 
 const signer: IDataObject = {
 	email,
-	act: role, // D4Sign expects `act`
+	act: role,
 	foreign,
 	certificadoicpbr,
 	assinatura_presencial: assinaturaPresencial,
@@ -73,7 +71,6 @@ const signer: IDataObject = {
 if (foreign === '1' && foreignLang) signer.foreign_lang = foreignLang;
 if (embedSmsNumber) signer.embed_smsnumber = embedSmsNumber;
 
-// Upload requirements requested from signer
 if (uploadAllow) signer.upload_allow = uploadAllow;
 if (uploadAllow === '1' && uploadObs) signer.upload_obs = uploadObs;
 
