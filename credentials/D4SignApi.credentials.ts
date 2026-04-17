@@ -5,6 +5,10 @@ import type {
 	INodeProperties,
 } from 'n8n-workflow';
 
+const SOURCE_SYSTEM_HEADER = {
+	'x-source-system': 'n8n',
+};
+
 export class D4SignApi implements ICredentialType {
 	name = 'd4SignApi';
 	displayName = 'D4Sign API';
@@ -12,6 +16,9 @@ export class D4SignApi implements ICredentialType {
 	authenticate: IAuthenticateGeneric = {
 		type: 'generic' as const,
 		properties: {
+			headers: {
+				...SOURCE_SYSTEM_HEADER,
+			},
 			qs: {
 				tokenAPI: '={{$credentials.tokenApi}}',
 				cryptKey: '={{$credentials.cryptKey}}',
@@ -23,6 +30,10 @@ export class D4SignApi implements ICredentialType {
 			baseURL: 'https://secure.d4sign.com.br/api/v1',
 			url: '/safes',
 			method: 'GET' as const,
+			headers: {
+				Accept: 'application/json',
+				...SOURCE_SYSTEM_HEADER,
+			},
 		},
 	};
 	properties: INodeProperties[] = [

@@ -21,6 +21,9 @@ type D4SignErrorLike = {
 };
 
 const BASE_URL = 'https://secure.d4sign.com.br/api/v1';
+const SOURCE_SYSTEM_HEADER = {
+	'x-source-system': 'n8n',
+};
 
 export function normalizeBase64(input: string): string {
 	const trimmed = String(input ?? '').trim();
@@ -81,6 +84,7 @@ export async function d4signApiRequest(
 		headers: {
 			Accept: 'application/json',
 			'Content-Type': 'application/json',
+			...SOURCE_SYSTEM_HEADER,
 		},
 		qs: {
 			...query,
@@ -122,6 +126,7 @@ export async function d4signApiRequestFormData(
 		url: `${BASE_URL}${endpoint}`,
 		headers: {
 			Accept: 'application/json',
+			...SOURCE_SYSTEM_HEADER,
 		},
 		qs: {
 			...query,
